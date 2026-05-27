@@ -58,3 +58,5 @@ Desktop.ini
 .AppleDouble
 .LSOverride
 *.log
+.Rproj.user
+.positai
