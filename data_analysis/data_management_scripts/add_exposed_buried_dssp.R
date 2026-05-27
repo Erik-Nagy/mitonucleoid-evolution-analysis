@@ -3,7 +3,7 @@ library(dplyr)
 library(bio3d)
 
 # Routes (Do after adding ordered/disordered data)
-tsv_file <- "./data/mt_nucleoid_PTMs_list_P-sites_processed.tsv" 
+tsv_file <- "./data/mt_nucleoid_PTMs_list_P-sites_processed.tsv"
 pdb_dir <- "./data/proteins_pdb"
 output_tsv <- "./data/mt_nucleoid_PTMs_list_P-sites_processed.tsv"
 
@@ -13,6 +13,26 @@ sasa_raw <- character(nrow(protein_data))
 
 mkdssp_path <- Sys.which("mkdssp")
 if (nchar(mkdssp_path) == 0) stop("mkdssp not found on PATH — install DSSP (e.g. conda install -c bioconda dssp) and ensure it is accessible.")
+
+# bio3d::dssp() strips CRYST1 via write.pdb, which mkdssp 4.x requires.
+# Run mkdssp directly on the original PDB file instead.
+run_dssp <- function(pdb_file, mkdssp_path) {
+  outfile <- tempfile(fileext = ".dssp")
+  on.exit(unlink(outfile, force = TRUE))
+  status <- system(
+    paste(mkdssp_path, "--output-format dssp", shQuote(pdb_file), shQuote(outfile)),
+    ignore.stderr = TRUE, ignore.stdout = TRUE
+  )
+  if (status != 0 || !file.exists(outfile)) return(NULL)
+  lines <- readLines(outfile)
+  header_idx <- which(substring(lines, 1, 3) == "  #")
+  if (length(header_idx) == 0) return(NULL)
+  data_lines <- lines[(header_idx[1] + 1):length(lines)]
+  data_lines <- data_lines[substring(data_lines, 14, 14) != "!"]
+  res_num <- as.numeric(substring(data_lines, 6, 10))
+  acc     <- as.numeric(substring(data_lines, 35, 38))
+  list(acc = setNames(acc, as.character(res_num)))
+}
 
 for (i in 1:nrow(protein_data)) {
   uniprot_id <- protein_data$`Uniprot ID`[i]
@@ -34,13 +54,8 @@ for (i in 1:nrow(protein_data)) {
   pdb <- read.pdb(pdb_files[1], verbose = FALSE)
   locs <- character(length(p_sites))
   sasa_vals <- character(length(p_sites))
-  
-  # Start DSSP
-  dssp_data <- tryCatch({
-    dssp(pdb, exefile = mkdssp_path)
-  }, error = function(e) {
-    NULL
-  })
+
+  dssp_data <- run_dssp(pdb_files[1], mkdssp_path)
   
   if (is.null(dssp_data)) {
     cat("DSSP failed for:", uniprot_id, "\n")

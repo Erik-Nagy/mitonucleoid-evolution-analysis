@@ -47,7 +47,7 @@ for (i in 1:nrow(protein_data)) {
 
     # Clean text
     clean_text <- trimws(content_text, which = "right")
-    cat(clean_text, "\n", file = fasta_file)
+    cat(clean_text, "\n", file = fasta_file, sep = "")
   } else {
     cat("  ! Error while getting reference", id, "\n")
     next
@@ -69,7 +69,7 @@ for (i in 1:nrow(protein_data)) {
         
         # Clean text
         clean_text <- trimws(content_text, which = "right")
-        cat(clean_text, "\n", file = fasta_file, append = TRUE)
+        cat(clean_text, "\n", file = fasta_file, append = TRUE, sep = "")
         cat("  +", species, "- found\n")
       } else {
         cat("  -", species, "- not found\n")

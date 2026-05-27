@@ -29,7 +29,8 @@ for (i in 1:nrow(protein_data)) {
   
   # Check FASTA file
   if (!file.exists(fasta_file)) next
-  seqs <- readAAStringSet(fasta_file)
+  raw_seqs <- readAAStringSet(fasta_file)
+  seqs <- AAStringSet(setNames(gsub("\\s", "", as.character(raw_seqs)), names(raw_seqs)))
   if (length(seqs) < 2) next
   
   cat("Aligning and analyzing:", gene_name, "(Number of sequences:", length(seqs), ")\n")
