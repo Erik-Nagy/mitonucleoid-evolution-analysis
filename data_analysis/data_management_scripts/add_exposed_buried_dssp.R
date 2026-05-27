@@ -77,8 +77,8 @@ for (i in 1:nrow(protein_data)) {
       
       # Get SASA value from DSSP object
       sasa_val <- dssp_data$acc[as.character(res_index_in_pdb)]
-      if (is.null(sasa_val) || is.na(sasa_val)) {
-        sasa_val <- dssp_data$acc[res_index_in_pdb]
+      if (is.null(sasa_val) || is.na(sasa_val) || sasa_val > 500) {
+        sasa_val <- NA
       }
 
       cat(paste0("Position ", site, ": found in PDB. SASA value from DSSP = ", sasa_val, "\n"))
