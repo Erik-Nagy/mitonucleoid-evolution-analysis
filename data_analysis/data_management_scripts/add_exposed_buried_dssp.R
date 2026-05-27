@@ -9,6 +9,7 @@ output_tsv <- "./data/mt_nucleoid_PTMs_list_P-sites_processed.tsv"
 
 protein_data <- read_tsv(tsv_file, show_col_types = FALSE)
 location_state <- character(nrow(protein_data))
+sasa_raw <- character(nrow(protein_data))
 
 mkdssp_path <- Sys.which("mkdssp")
 if (nchar(mkdssp_path) == 0) stop("mkdssp not found on PATH — install DSSP (e.g. conda install -c bioconda dssp) and ensure it is accessible.")
@@ -26,11 +27,13 @@ for (i in 1:nrow(protein_data)) {
   if (length(pdb_files) == 0) {
     cat("No PDB for:", uniprot_id, "\n")
     location_state[i] <- NA
+    sasa_raw[i] <- NA
     next
   }
   
   pdb <- read.pdb(pdb_files[1], verbose = FALSE)
   locs <- character(length(p_sites))
+  sasa_vals <- character(length(p_sites))
   
   # Start DSSP
   dssp_data <- tryCatch({
@@ -42,6 +45,7 @@ for (i in 1:nrow(protein_data)) {
   if (is.null(dssp_data)) {
     cat("DSSP failed for:", uniprot_id, "\n")
     location_state[i] <- paste(rep("Unknown", length(p_sites)), collapse = ",")
+    sasa_raw[i] <- paste(rep("NA", length(p_sites)), collapse = ",")
     next
   }
 
@@ -63,26 +67,31 @@ for (i in 1:nrow(protein_data)) {
       }
 
       cat(paste0("Position ", site, ": found in PDB. SASA value from DSSP = ", sasa_val, "\n"))
-      
+
       if (!is.na(sasa_val)) {
+        sasa_vals[j] <- as.character(round(sasa_val, 2))
         if (sasa_val > 20) {
           locs[j] <- "Exposed"
         } else {
           locs[j] <- "Buried"
         }
       } else {
+        sasa_vals[j] <- "NA"
         locs[j] <- "Unknown"
       }
-      
+
     } else {
       cat(paste0("Position ", site, " not found in PDB file!\n"))
+      sasa_vals[j] <- "NA"
       locs[j] <- "Unknown"
     }
   }
   
   location_state[i] <- paste(locs, collapse = ",")
+  sasa_raw[i] <- paste(sasa_vals, collapse = ",")
 }
 
+protein_data$`P-site SASA (Å²)` <- sasa_raw
 protein_data$`P-site 3D Location (SASA)` <- location_state
 
 if ("Annotation" %in% names(protein_data)) {

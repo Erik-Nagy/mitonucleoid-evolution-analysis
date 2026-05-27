@@ -101,6 +101,7 @@ The final file `data/mt_nucleoid_PTMs_list_P-sites_processed.tsv` contains the o
 | `P-site Structural State` | AlphaFold2 | Very high (>90) / Confident (70–90) / Low (50–70) / Very low (<50) |
 | `Metapredict Disorder Score` | Metapredict V3 | Per-residue disorder probability (0–1) |
 | `Metapredict State` | Metapredict V3 | Ordered (<0.5) / Disordered (≥0.5) |
+| `P-site SASA (Å²)` | DSSP | Raw solvent-accessible surface area at P-site Cα (Å²; comma-separated) |
 | `P-site 3D Location (SASA)` | DSSP | Exposed (SASA > 20 Å²) / Buried (≤20 Å²) |
 
 ---
