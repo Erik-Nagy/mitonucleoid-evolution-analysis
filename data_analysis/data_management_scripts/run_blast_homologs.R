@@ -26,7 +26,7 @@ species_list <- character(length(full_headers))
 ncbi_idx <- grepl("\\[.*?\\]", full_headers)
 species_list[ncbi_idx] <- gsub("\\[|\\]", "", regmatches(full_headers[ncbi_idx], regexpr("\\[.*?\\]", full_headers[ncbi_idx])))
 
-# B) Uniprot format: OS=Saccharomyces cerevisiae
+# B) Uniport format: OS=Saccharomyces cerevisiae
 uniprot_idx <- !ncbi_idx & grepl("OS=", full_headers)
 species_list[uniprot_idx] <- gsub("OS=", "", regmatches(full_headers[uniprot_idx], regexpr("OS=[a-zA-Z0-9_\\. ]+", full_headers[uniprot_idx])))
 
