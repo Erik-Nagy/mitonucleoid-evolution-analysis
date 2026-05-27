@@ -1,0 +1,12 @@
+name: p_sites_explorer
+title: p_sites_explorer
+username: erik-nagy
+account: erik-nagy
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 17422986
+bundleId: 12043097
+url: https://erik-nagy.shinyapps.io/p_sites_explorer/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

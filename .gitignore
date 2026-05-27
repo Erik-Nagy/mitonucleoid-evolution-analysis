@@ -1,4 +1,59 @@
-.Rproj.user
+# ====================================================================
+# BIOLOGICAL DATA (Ignore massive raw and intermediate data files)
+# ====================================================================
+# Ignore specific data folders
+data/proteins/
+data/orthologs/
+data/proteins_fasta/
+
+# Ignore local BLAST database files in the root directory
+yeast_db.*
+
+# General fallback rules for large bioinformatic file formats
+*.fasta
+*.fa
+*.faa
+*.pdb
+*.sam
+*.bam
+*.vcf
+*.blastdb*
+*.nhr
+*.nin
+*.nsq
+
+# ====================================================================
+# PYTHON ENVIRONMENT & CACHE (Ignore local environment overhead)
+# ====================================================================
+meta_env/
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ====================================================================
+# R / RSTUDIO SPECIFIC (Ignore local user state and history)
+# ====================================================================
 .Rhistory
 .RData
 .Ruserdata
+.RDataTmp
+.Rproj.user/
+
+# NOTE: Do NOT add your main .Rproj file here. It belongs on GitHub!
+
+# ====================================================================
+# SYSTEM FILES (Ignore OS-specific junk files)
+# ====================================================================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+.AppleDouble
+.LSOverride
+*.log
