@@ -42,7 +42,7 @@ mitonucleoid-evolution-analysis/
 ### R packages
 
 ```r
-install.packages(c("readxl", "readr", "dplyr", "tidyr", "stringr", "httr", "bio3d", "shiny", "r3dmol"))
+install.packages(c("readxl", "readr", "dplyr", "tidyr", "stringr", "httr", "bio3d", "shiny", "r3dmol", "BiocManager"))
 BiocManager::install(c("Biostrings", "DECIPHER"))
 ```
 
