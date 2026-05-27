@@ -8,7 +8,7 @@ A bioinformatics pipeline that annotates phosphorylation sites (P-sites) from 37
 
 ```
 mitonucleoid-evolution-analysis/
-├── data_anlysis/                        # pipeline scripts and data (note: folder name typo)
+├── data_analysis/                        # pipeline scripts and data (note: folder name typo)
 │   ├── data_management_scripts/         # 8 R scripts + 1 Python script
 │   └── data/
 │       ├── mt_nucleoid_PTMs_list_P-sites_20260414.xlsx   # source input
@@ -56,14 +56,14 @@ pip install metapredict pandas requests
 
 ## Input Data
 
-- **`data_anlysis/data/mt_nucleoid_PTMs_list_P-sites_20260414.xlsx`** — source table with 37 proteins (columns: Systematic gene name, Standard gene name, UniProt ID, Number of P-sites, P-site positions, Annotation)
-- **`data_anlysis/data/proteins_fasta/combined_proteins.fasta`** — combined proteome FASTA for the BLAST database (not tracked in git; must be provided manually before step 4)
+- **`data_analysis/data/mt_nucleoid_PTMs_list_P-sites_20260414.xlsx`** — source table with 37 proteins (columns: Systematic gene name, Standard gene name, UniProt ID, Number of P-sites, P-site positions, Annotation)
+- **`data_analysis/data/proteins_fasta/combined_proteins.fasta`** — combined proteome FASTA for the BLAST database (not tracked in git; must be provided manually before step 4)
 
 ---
 
 ## Pipeline
 
-All scripts in steps 1–7 and 9 use `data_anlysis/` as the working directory. Step 8 must be run from `data_anlysis/data_management_scripts/`.
+All scripts in steps 1–7 and 9 use `data_analysis/` as the working directory. Step 8 must be run from `data_analysis/data_management_scripts/`.
 
 | Step | Script | What it does | Output |
 |------|--------|--------------|--------|
