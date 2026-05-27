@@ -32,7 +32,7 @@ ui <- fluidPage(
       tags$hr(),
 
       textInput("psites_input", 
-                "P-sites (seperate by comma):", 
+                "P-sites (separate by comma):", 
                 value = ""),
 
       actionButton("reset_btn", "Default", class = "btn-warning"),
@@ -43,7 +43,7 @@ ui <- fluidPage(
                    "Style of protein:",
                    choices = c(
                      "Spectrum (N-terminus -> C-terminus)" = "spectrum",
-                     "Secondary structure (Orange=Alpha Helix, Blue=Beta Sheet, Zelená=Loop)" = "custom_ss",
+                     "Secondary structure (Orange=Alpha Helix, Blue=Beta Sheet, Green=Loop)" = "custom_ss",
                      "Gray" = "gray"
                    ),
                    selected = "spectrum"),
