@@ -11,6 +11,7 @@ yeast_db.*
 
 # General fallback rules for large bioinformatic file formats
 *.fasta
+!**/combined_proteins.fasta
 *.fa
 *.faa
 *.pdb
