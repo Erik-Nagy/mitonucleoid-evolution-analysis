@@ -4,6 +4,6 @@ library(writexl)
 tsv_file <- "./data/mt_nucleoid_PTMs_list_P-sites_processed.tsv"
 output_file <- "./data/mt_nucleoid_PTMs_list_P-sites_processed.xlsx"
 
-protein_data <- read_tsv(tsv_file, show_col_types = FALSE)
+protein_data <- read_tsv(tsv_file, show_col_types = FALSE, col_types = cols(.default = "c"))
 
 write_xlsx(protein_data, output_file)
