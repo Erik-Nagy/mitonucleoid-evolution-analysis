@@ -27,9 +27,15 @@ DISORDER_DONE  := $(DATA)/.disorder_done
 SASA_DONE      := $(DATA)/.sasa_done
 PROCESSED_XLSX := $(DATA)/$(PROCESSED_BASE).xlsx
 
-.PHONY: all download process clean clean-process
+.PHONY: all download process install clean clean-process
 
 all: download process
+
+# ── Install dependencies ───────────────────────────────────────────────────
+
+install:
+	Rscript install_packages.R
+	pip install -r requirements.txt
 
 # ── Download pipeline ──────────────────────────────────────────────────────
 
