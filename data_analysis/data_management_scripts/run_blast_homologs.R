@@ -92,3 +92,5 @@ for (query_fasta in query_files) {
 
   if(file.exists(results_table)) file.remove(results_table)
 }
+
+invisible(file.remove(list.files(".", pattern = "^yeast_db\\.", full.names = FALSE)))

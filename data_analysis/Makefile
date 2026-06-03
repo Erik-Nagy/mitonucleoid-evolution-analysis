@@ -83,6 +83,7 @@ $(PROCESSED_XLSX): $(SASA_DONE)
 clean: clean-process
 	rm -f $(INPUT_TSV)
 	rm -rf $(DATA)/orthologs $(DATA)/proteins_pdb $(DATA)/homologs
+	rm -f yeast_db.*
 
 clean-process:
 	rm -f $(CONSERVATION) $(PROCESSED_TSV) $(PROCESSED_XLSX)
