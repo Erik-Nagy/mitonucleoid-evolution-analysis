@@ -6,6 +6,13 @@ data/proteins/
 data/orthologs/
 data/proteins_fasta/
 
+# Make pipeline — generated data directories and stamp files
+data_analysis/data/orthologs/
+data_analysis/data/proteins_pdb/
+data_analysis/data/homologs/
+data_analysis/data/.*_done
+data_analysis/data/*/.done
+
 # Ignore local BLAST database files in the root directory
 yeast_db.*
 

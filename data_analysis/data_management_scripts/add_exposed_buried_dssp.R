@@ -19,11 +19,22 @@ if (nchar(mkdssp_path) == 0) stop("mkdssp not found on PATH — install DSSP (e.
 run_dssp <- function(pdb_file, mkdssp_path) {
   outfile <- tempfile(fileext = ".dssp")
   on.exit(unlink(outfile, force = TRUE))
-  status <- system(
-    paste(mkdssp_path, "--output-format dssp", shQuote(pdb_file), shQuote(outfile)),
-    ignore.stderr = TRUE, ignore.stdout = TRUE
+  stderr_out <- system2(
+    mkdssp_path,
+    args = c(shQuote(pdb_file), shQuote(outfile)),
+    stdout = FALSE, stderr = TRUE
   )
-  if (status != 0 || !file.exists(outfile)) return(NULL)
+  exit_code <- attr(stderr_out, "status")
+  if (!is.null(exit_code)) {
+    cat("mkdssp failed (exit", exit_code, ") for:", basename(pdb_file), "\n")
+    if (length(stderr_out) > 0) cat("  stderr:", paste(stderr_out, collapse = "\n  "), "\n")
+    return(NULL)
+  }
+  if (!file.exists(outfile)) {
+    cat("mkdssp produced no output file for:", basename(pdb_file), "\n")
+    if (length(stderr_out) > 0) cat("  stderr:", paste(stderr_out, collapse = "\n  "), "\n")
+    return(NULL)
+  }
   lines <- readLines(outfile)
   header_idx <- which(substring(lines, 1, 3) == "  #")
   if (length(header_idx) == 0) return(NULL)
