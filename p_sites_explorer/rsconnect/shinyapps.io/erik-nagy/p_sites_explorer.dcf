@@ -5,7 +5,7 @@ account: erik-nagy
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 17422986
-bundleId: 12043097
+bundleId: 12047091
 url: https://erik-nagy.shinyapps.io/p_sites_explorer/
 version: 1
 asMultiple: FALSE
