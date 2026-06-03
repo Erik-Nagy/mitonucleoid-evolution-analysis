@@ -1,11 +1,11 @@
+import sys
 import pandas as pd
 import requests
 import metapredict as meta
 import time
 
-# Routes (Do after adding pLDDT data)
-input_tsv = "../data/mt_nucleoid_PTMs_list_P-sites_processed.tsv" 
-output_tsv = "../data/mt_nucleoid_PTMs_list_P-sites_processed.tsv"
+input_tsv = sys.argv[1]
+output_tsv = sys.argv[1]
 
 # Load table
 try:

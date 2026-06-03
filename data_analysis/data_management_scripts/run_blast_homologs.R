@@ -1,10 +1,10 @@
 library(Biostrings)
 library(dplyr)
 
-# Routes
-db_fasta <- "./data/proteins_fasta/combined_proteins.fasta"
-orthologs_dir <- "./data/orthologs"
-homologs_dir <- "./data/homologs"
+args <- commandArgs(trailingOnly = TRUE)
+db_fasta <- args[1]
+orthologs_dir <- args[2]
+homologs_dir <- args[3]
 db_name <- "yeast_db"
 
 if(!dir.exists(homologs_dir)) dir.create(homologs_dir)

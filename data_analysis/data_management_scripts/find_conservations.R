@@ -4,10 +4,10 @@ library(readr)
 library(dplyr)
 library(tidyr)
 
-# Routes
-tsv_file <- "./data/mt_nucleoid_PTMs_list_P-sites_20260414.tsv"
-homologs_dir <- "./data/homologs"
-output_csv <- "./data/psite_conservation_results.csv"
+args <- commandArgs(trailingOnly = TRUE)
+tsv_file <- args[1]
+homologs_dir <- args[2]
+output_csv <- args[3]
 
 # Load proteins
 protein_data <- read_tsv(tsv_file)

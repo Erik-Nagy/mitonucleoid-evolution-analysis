@@ -56,14 +56,36 @@ pip install metapredict pandas requests
 
 ## Input Data
 
-- **`data_analysis/data/mt_nucleoid_PTMs_list_P-sites_20260414.xlsx`** — source table with 37 proteins (columns: Systematic gene name, Standard gene name, UniProt ID, Number of P-sites, P-site positions, Annotation)
-- **`data_analysis/data/proteins_fasta/combined_proteins.fasta`** — combined proteome FASTA for the BLAST database (not tracked in git; must be provided manually before step 4)
+- **`data_analysis/data/mt_nucleoid_PTMs_list_P-sites_20260414.xlsx`** — source table with 37 proteins (columns: Systematic gene name, Standard gene name, UniProt ID, Number of P-sites, P-site positions, Annotation). The filename base (`mt_nucleoid_PTMs_list_P-sites_20260414`) is the default `INPUT_BASE`; pass `INPUT_BASE=<name>` to `make` to use a different file.
+- **`data_analysis/data/proteins_fasta/combined_proteins.fasta`** — combined proteome FASTA for the BLAST database (not tracked in git; must be provided manually before running `make process`)
 
 ---
 
-## Pipeline
+## Running the pipeline
 
-All scripts in steps 1–7 and 9 use `data_analysis/` as the working directory. Step 8 must be run from `data_analysis/data_management_scripts/`.
+All `make` commands must be run from the `data_analysis/` directory.  
+On Windows, use **Git Bash** or **MSYS2** (requires `touch`, `mkdir -p`, `rm`).
+
+```bash
+cd data_analysis
+
+make download        # Steps 1–3: convert xlsx, fetch orthologs, download PDB structures
+make process         # Steps 4–10: BLAST → conservation → pLDDT → disorder → SASA → xlsx
+make all             # download + process in one go
+
+# Switch to a different input file:
+make all INPUT_BASE=mt_nucleoid_PTMs_list_P-sites_20261201
+
+make -n process      # dry run — print commands without executing
+make clean-process   # remove processed outputs, keep downloaded data
+make clean           # remove all generated files
+```
+
+**Note:** `make process` requires `data/proteins_fasta/combined_proteins.fasta` to exist (see Input Data above). Make will error clearly if it is missing.
+
+---
+
+## Pipeline steps
 
 | Step | Script | What it does | Output |
 |------|--------|--------------|--------|

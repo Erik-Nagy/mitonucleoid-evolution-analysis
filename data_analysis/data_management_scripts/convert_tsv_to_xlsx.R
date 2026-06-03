@@ -1,8 +1,9 @@
 library(readr)
 library(writexl)
 
-tsv_file <- "./data/mt_nucleoid_PTMs_list_P-sites_processed.tsv"
-output_file <- "./data/mt_nucleoid_PTMs_list_P-sites_processed.xlsx"
+args <- commandArgs(trailingOnly = TRUE)
+tsv_file <- args[1]
+output_file <- args[2]
 
 protein_data <- read_tsv(tsv_file, show_col_types = FALSE, col_types = cols(.default = "c"))
 

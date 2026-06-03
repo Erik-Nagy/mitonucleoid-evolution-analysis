@@ -1,8 +1,9 @@
 #install.packages("readxl")
 library(readxl)
 
-table_xls <- read_excel("./data/mt_nucleoid_PTMs_list_P-sites_20260414.xlsx")[1:37, ]
-output_file <- "./data/mt_nucleoid_PTMs_list_P-sites_20260414.tsv"
+args <- commandArgs(trailingOnly = TRUE)
+table_xls <- read_excel(args[1])[1:37, ]
+output_file <- args[2]
 
 # Export to TSV
 write.table(table_xls, 

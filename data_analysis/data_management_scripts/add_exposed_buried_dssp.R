@@ -2,10 +2,10 @@ library(readr)
 library(dplyr)
 library(bio3d)
 
-# Routes (Do after adding ordered/disordered data)
-tsv_file <- "./data/mt_nucleoid_PTMs_list_P-sites_processed.tsv"
-pdb_dir <- "./data/proteins_pdb"
-output_tsv <- "./data/mt_nucleoid_PTMs_list_P-sites_processed.tsv"
+args <- commandArgs(trailingOnly = TRUE)
+tsv_file <- args[1]
+pdb_dir <- args[2]
+output_tsv <- args[1]
 
 protein_data <- read_tsv(tsv_file, show_col_types = FALSE)
 location_state <- character(nrow(protein_data))

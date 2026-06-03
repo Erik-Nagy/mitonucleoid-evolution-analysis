@@ -11,9 +11,9 @@ target_species <- c(
   "Candida glabrata", "Nakaseomyces bacillosporus", "Candida castellii"
 )
 
-# Routes
-protein_data <- read_tsv("./data/mt_nucleoid_PTMs_list_P-sites_20260414.tsv")
-orthologs_dir <- "./data/orthologs"
+args <- commandArgs(trailingOnly = TRUE)
+protein_data <- read_tsv(args[1])
+orthologs_dir <- args[2]
 
 if(!dir.exists(orthologs_dir)) dir.create(orthologs_dir)
 

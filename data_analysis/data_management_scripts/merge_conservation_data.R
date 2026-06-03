@@ -3,10 +3,10 @@ library(dplyr)
 library(tidyr)
 library(stringr)
 
-# Routes
-tsv_file <- "./data/mt_nucleoid_PTMs_list_P-sites_20260414.tsv"
-results_csv <- "./data/psite_conservation_results.csv"
-output_tsv <- "./data/mt_nucleoid_PTMs_list_P-sites_processed.tsv"
+args <- commandArgs(trailingOnly = TRUE)
+tsv_file <- args[1]
+results_csv <- args[2]
+output_tsv <- args[3]
 
 # Load tables
 protein_data <- read_tsv(tsv_file)
