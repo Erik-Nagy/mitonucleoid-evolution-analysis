@@ -11,7 +11,7 @@ mitonucleoid-evolution-analysis/
 ├── data_analysis/                        # pipeline scripts and data
 │   ├── data_management_scripts/         # 9 R scripts + 2 Python scripts
 │   ├── data_analysis_visualization/     # R visualization scripts
-│   │   ├── 00_load_data.R               # data loading & preprocessing
+│   │   ├── load_data.R                  # data loading & preprocessing
 │   │   ├── analysis.R                   # 11–14 ggplot2 figures
 │   │   ├── run_all.R                    # entry point — sources both scripts
 │   │   └── figures/                     # generated PNGs (git-ignored)

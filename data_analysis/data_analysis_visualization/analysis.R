@@ -1,5 +1,5 @@
 # 11–14 plots for P-site characterisation in mitochondrial nucleoid proteins.
-# Requires: psite_long, save_fig(), COL_AA, COL_DISORDER, COL_SASA  (00_load_data.R)
+# Requires: psite_long, save_fig(), COL_AA, COL_DISORDER, COL_SASA  (load_data.R)
 
 library(tidyverse)
 library(ggpubr)
