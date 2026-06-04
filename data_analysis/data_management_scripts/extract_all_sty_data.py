@@ -1,17 +1,3 @@
-"""
-extract_all_sty_data.py
-For each of the 37 mitochondrial nucleoid proteins, extract disorder scores
-(Metapredict V3), pLDDT scores (AlphaFold2 B-factors), and SASA (mkdssp)
-for every S, T, and Y residue in the full sequence, then mark which ones
-are known P-sites.
-
-Usage:
-    python extract_all_sty_data.py <processed_tsv> <orthologs_dir> <pdb_dir> <output_tsv>
-
-Requires: metapredict, pandas
-Requires on PATH: mkdssp (DSSP 4.x — same as the existing pipeline)
-"""
-
 import sys
 import os
 import shutil
