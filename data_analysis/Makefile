@@ -25,8 +25,10 @@ PROCESSED_TSV  := $(DATA)/$(PROCESSED_BASE).tsv
 PLDDT_DONE     := $(DATA)/.plddt_done
 DISORDER_DONE  := $(DATA)/.disorder_done
 SASA_DONE      := $(DATA)/.sasa_done
-PROCESSED_XLSX := $(DATA)/$(PROCESSED_BASE).xlsx
-ALL_STY_DATA   := $(DATA)/all_sty_data.tsv
+PROCESSED_XLSX  := $(DATA)/$(PROCESSED_BASE).xlsx
+PSITE_LONG_TSV  := $(DATA)/psite_long.tsv
+PSITE_LONG_XLSX := $(DATA)/psite_long.xlsx
+ALL_STY_DATA    := $(DATA)/all_sty_data.tsv
 
 .PHONY: all download process install clean clean-process
 
@@ -57,7 +59,7 @@ $(PDB_DONE): $(INPUT_TSV)
 
 # ── Processing pipeline ────────────────────────────────────────────────────
 
-process: $(PROCESSED_XLSX) $(ALL_STY_DATA)
+process: $(PROCESSED_XLSX) $(PSITE_LONG_XLSX) $(ALL_STY_DATA)
 
 $(HOMOLOGS_DONE): $(ORTHOLOGS_DONE) $(COMBINED_FA)
 	mkdir -p $(DATA)/homologs
@@ -85,6 +87,12 @@ $(SASA_DONE): $(DISORDER_DONE) $(PDB_DONE)
 $(PROCESSED_XLSX): $(SASA_DONE)
 	Rscript $(SCRIPTS)/convert_tsv_to_xlsx.R $(PROCESSED_TSV) $(PROCESSED_XLSX)
 
+$(PSITE_LONG_TSV): $(SASA_DONE) $(CONSERVATION)
+	Rscript $(SCRIPTS)/export_psite_long.R $(PROCESSED_TSV) $(CONSERVATION) $(PSITE_LONG_TSV)
+
+$(PSITE_LONG_XLSX): $(PSITE_LONG_TSV)
+	Rscript $(SCRIPTS)/convert_tsv_to_xlsx.R $(PSITE_LONG_TSV) $(PSITE_LONG_XLSX)
+
 $(ALL_STY_DATA): $(DISORDER_DONE) $(PDB_DONE)
 	python $(SCRIPTS)/extract_all_sty_data.py $(PROCESSED_TSV) $(DATA)/orthologs $(DATA)/proteins_pdb $(ALL_STY_DATA)
 
@@ -96,5 +104,5 @@ clean: clean-process
 	rm -f yeast_db.*
 
 clean-process:
-	rm -f $(CONSERVATION) $(PROCESSED_TSV) $(PROCESSED_XLSX) $(ALL_STY_DATA)
+	rm -f $(CONSERVATION) $(PROCESSED_TSV) $(PROCESSED_XLSX) $(PSITE_LONG_TSV) $(PSITE_LONG_XLSX) $(ALL_STY_DATA)
 	rm -f $(PLDDT_DONE) $(DISORDER_DONE) $(SASA_DONE)
