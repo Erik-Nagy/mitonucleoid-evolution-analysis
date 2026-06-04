@@ -10,7 +10,7 @@ if (interactive()) {
 library(tidyverse)
 library(ggpubr)
 
-source("00_load_data.R")
+source("load_data.R")
 
 old_figs <- list.files(FIG_DIR, full.names = TRUE)
 if (length(old_figs) > 0) file.remove(old_figs)
