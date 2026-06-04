@@ -26,7 +26,7 @@ PLDDT_DONE     := $(DATA)/.plddt_done
 DISORDER_DONE  := $(DATA)/.disorder_done
 SASA_DONE      := $(DATA)/.sasa_done
 PROCESSED_XLSX := $(DATA)/$(PROCESSED_BASE).xlsx
-ALL_STY_DATA   := $(DATA)/all_sty_data.csv
+ALL_STY_DATA   := $(DATA)/all_sty_data.tsv
 
 .PHONY: all download process install clean clean-process
 

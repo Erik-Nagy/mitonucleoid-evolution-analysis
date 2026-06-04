@@ -6,7 +6,7 @@ for every S, T, and Y residue in the full sequence, then mark which ones
 are known P-sites.
 
 Usage:
-    python extract_all_sty_data.py <processed_tsv> <orthologs_dir> <pdb_dir> <output_csv>
+    python extract_all_sty_data.py <processed_tsv> <orthologs_dir> <pdb_dir> <output_tsv>
 
 Requires: metapredict, pandas
 Requires on PATH: mkdssp (DSSP 4.x — same as the existing pipeline)
@@ -116,7 +116,7 @@ def main():
     if len(sys.argv) != 5:
         sys.exit(
             "Usage: extract_all_sty_data.py "
-            "<processed_tsv> <orthologs_dir> <pdb_dir> <output_csv>"
+            "<processed_tsv> <orthologs_dir> <pdb_dir> <output_tsv>"
         )
 
     tsv_path, orthologs_dir, pdb_dir, out_csv = sys.argv[1:]
@@ -190,7 +190,7 @@ def main():
             })
 
     result = pd.DataFrame(records)
-    result.to_csv(out_csv, index=False)
+    result.to_csv(out_csv, index=False, sep="\t")
 
     n_psite = int(result["is_psite"].sum())
     n_bg = int((~result["is_psite"]).sum())
