@@ -71,13 +71,9 @@ p04 <- psite_long %>%
   geom_jitter(width = 0.15, size = 2.2, alpha = 0.7, colour = "gray30", na.rm = TRUE) +
   scale_fill_manual(values = COL_AA, guide = "none") +
   scale_y_continuous(breaks = seq(0, 1, 0.25)) +
-  coord_cartesian(ylim = c(0, 1.5), clip = "off") +
+  coord_cartesian(ylim = c(0, 1), clip = "off") +
   annotate("text", x = 0.55, y = 0.53, label = "threshold 0.5",
            hjust = 0, size = 3, colour = "gray50") +
-  stat_compare_means(
-    comparisons = list(c("pS", "pT"), c("pS", "pY"), c("pT", "pY")),
-    method = "wilcox.test", label = "p.signif", tip.length = 0.01
-  ) +
   labs(
     title = "Disorder score by phosphorylated residue type",
     x     = "Residue",
