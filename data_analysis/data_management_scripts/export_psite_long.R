@@ -23,6 +23,7 @@ MULTI_VAL_COLS <- c(
 
 sasa_col <- grep("P-site SASA", names(raw), value = TRUE)[1]
 if (!is.na(sasa_col)) MULTI_VAL_COLS <- c(MULTI_VAL_COLS, sasa_col)
+if ("P-site RSA (%)" %in% names(raw)) MULTI_VAL_COLS <- c(MULTI_VAL_COLS, "P-site RSA (%)")
 
 psite_long <- raw %>%
   mutate(across(all_of(MULTI_VAL_COLS), ~ strsplit(trimws(as.character(.)), ",\\s*"))) %>%

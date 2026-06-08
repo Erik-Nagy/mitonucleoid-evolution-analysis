@@ -53,6 +53,7 @@ psite_long <- read_tsv(psite_long_path, show_col_types = FALSE,
     disorder_score   = `Metapredict Disorder Score`,
     disorder_state   = `Metapredict State`,
     sasa_location    = `P-site 3D Location (SASA)`,
+    rsa_pct          = `P-site RSA (%)`,
     annotation       = Annotation,
     residue_type     = `Residue Type`
   ) %>%
@@ -69,6 +70,7 @@ psite_long <- read_tsv(psite_long_path, show_col_types = FALSE,
     plddt            = as.numeric(plddt),
     disorder_score   = as.numeric(disorder_score),
     sasa             = as.numeric(sasa),
+    rsa_pct          = as.numeric(rsa_pct),
     structural_state = factor(structural_state,
       levels = c("Very low", "Low", "Confident", "Very high"), ordered = TRUE),
     disorder_state   = factor(disorder_state, levels = c("Ordered", "Disordered")),
@@ -89,6 +91,7 @@ if (file.exists(all_sty_path)) {
         ifelse(is_psite, paste0("p", residue), residue),
         levels = c("S", "pS", "T", "pT", "Y", "pY")
       ),
+      rsa              = as.numeric(rsa),
       disorder_state   = factor(disorder_state, levels = c("Ordered", "Disordered")),
       structural_state = factor(structural_state,
         levels = c("Very low", "Low", "Confident", "Very high"), ordered = TRUE),

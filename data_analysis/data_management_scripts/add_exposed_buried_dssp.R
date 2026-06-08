@@ -2,14 +2,23 @@ library(readr)
 library(dplyr)
 library(bio3d)
 
+# Max ASA (Å²) per residue — Tien et al. (2013) empirical values
+MAX_ASA <- c(
+  ALA = 121, ARG = 265, ASN = 187, ASP = 187, CYS = 148,
+  GLN = 214, GLU = 214, GLY =  97, HIS = 216, ILE = 195,
+  LEU = 191, LYS = 230, MET = 203, PHE = 228, PRO = 154,
+  SER = 143, THR = 163, TRP = 264, TYR = 255, VAL = 165
+)
+
 args <- commandArgs(trailingOnly = TRUE)
-tsv_file <- args[1]
-pdb_dir <- args[2]
+tsv_file   <- args[1]
+pdb_dir    <- args[2]
 output_tsv <- args[1]
 
-protein_data <- read_tsv(tsv_file, show_col_types = FALSE)
+protein_data   <- read_tsv(tsv_file, show_col_types = FALSE)
 location_state <- character(nrow(protein_data))
-sasa_raw <- character(nrow(protein_data))
+sasa_raw       <- character(nrow(protein_data))
+rsa_out        <- character(nrow(protein_data))
 
 mkdssp_path <- Sys.which("mkdssp")
 if (nchar(mkdssp_path) == 0) stop("mkdssp not found on PATH — install DSSP (e.g. conda install -c bioconda dssp) and ensure it is accessible.")
@@ -35,7 +44,7 @@ run_dssp <- function(pdb_file, mkdssp_path) {
     if (length(stderr_out) > 0) cat("  stderr:", paste(stderr_out, collapse = "\n  "), "\n")
     return(NULL)
   }
-  lines <- readLines(outfile)
+  lines      <- readLines(outfile)
   header_idx <- which(substring(lines, 1, 3) == "  #")
   if (length(header_idx) == 0) return(NULL)
   data_lines <- lines[(header_idx[1] + 1):length(lines)]
@@ -46,7 +55,7 @@ run_dssp <- function(pdb_file, mkdssp_path) {
 }
 
 for (i in 1:nrow(protein_data)) {
-  uniprot_id <- protein_data$`Uniprot ID`[i]
+  uniprot_id  <- protein_data$`Uniprot ID`[i]
   p_sites_raw <- protein_data$`P-site positions`[i]
 
   p_sites <- as.numeric(trimws(unlist(strsplit(as.character(p_sites_raw), ","))))
@@ -58,66 +67,66 @@ for (i in 1:nrow(protein_data)) {
   if (length(pdb_files) == 0) {
     cat("No PDB for:", uniprot_id, "\n")
     location_state[i] <- NA
-    sasa_raw[i] <- NA
+    sasa_raw[i]       <- NA
+    rsa_out[i]        <- NA
     next
   }
-  
-  pdb <- read.pdb(pdb_files[1], verbose = FALSE)
-  locs <- character(length(p_sites))
+
+  pdb       <- read.pdb(pdb_files[1], verbose = FALSE)
+  locs      <- character(length(p_sites))
   sasa_vals <- character(length(p_sites))
+  rsa_vals  <- character(length(p_sites))
 
   dssp_data <- run_dssp(pdb_files[1], mkdssp_path)
-  
+
   if (is.null(dssp_data)) {
     cat("DSSP failed for:", uniprot_id, "\n")
     location_state[i] <- paste(rep("Unknown", length(p_sites)), collapse = ",")
-    sasa_raw[i] <- paste(rep("NA", length(p_sites)), collapse = ",")
+    sasa_raw[i]       <- paste(rep("NA", length(p_sites)), collapse = ",")
+    rsa_out[i]        <- paste(rep("NA", length(p_sites)), collapse = ",")
     next
   }
 
-  cat(paste0("\nProcessing ", uniprot_id, ": Looking for positions [", paste(p_sites, collapse=","), "]\n"))
+  cat(paste0("\nProcessing ", uniprot_id, ": Looking for positions [",
+             paste(p_sites, collapse = ","), "]\n"))
 
   for (j in seq_along(p_sites)) {
-    site <- p_sites[j]
-
-    # Find CA for position
+    site     <- p_sites[j]
     atom_idx <- which(pdb$atom$resno == site & pdb$atom$elety == "CA")
-    
+
     if (length(atom_idx) > 0) {
-      res_index_in_pdb <- pdb$atom$resno[atom_idx[1]] 
-      
-      # Get SASA value from DSSP object
-      sasa_val <- dssp_data$acc[as.character(res_index_in_pdb)]
-      if (is.null(sasa_val) || is.na(sasa_val) || sasa_val > 500) {
-        sasa_val <- NA
-      }
+      res_index <- pdb$atom$resno[atom_idx[1]]
+      res_name  <- pdb$atom$resid[atom_idx[1]]
 
-      cat(paste0("Position ", site, ": found in PDB. SASA value from DSSP = ", sasa_val, "\n"))
+      sasa_val <- dssp_data$acc[as.character(res_index)]
+      if (is.null(sasa_val) || is.na(sasa_val) || sasa_val > 500) sasa_val <- NA
 
-      if (!is.na(sasa_val)) {
-        sasa_vals[j] <- as.character(round(sasa_val, 2))
-        if (sasa_val > 20) {
-          locs[j] <- "Exposed"
-        } else {
-          locs[j] <- "Buried"
-        }
-      } else {
-        sasa_vals[j] <- "NA"
-        locs[j] <- "Unknown"
-      }
+      max_asa <- MAX_ASA[res_name]
+      rsa_val <- if (!is.na(sasa_val) && !is.na(max_asa) && max_asa > 0)
+                   round((sasa_val / max_asa) * 100, 2) else NA
+
+      cat(paste0("Position ", site, " (", res_name, "): SASA = ", sasa_val,
+                 " Å², RSA = ", rsa_val, "%\n"))
+
+      sasa_vals[j] <- if (!is.na(sasa_val)) as.character(round(sasa_val, 2)) else "NA"
+      rsa_vals[j]  <- if (!is.na(rsa_val))  as.character(rsa_val)            else "NA"
+      locs[j]      <- if (!is.na(rsa_val)) { if (rsa_val > 20) "Exposed" else "Buried" } else "Unknown"
 
     } else {
       cat(paste0("Position ", site, " not found in PDB file!\n"))
       sasa_vals[j] <- "NA"
-      locs[j] <- "Unknown"
+      rsa_vals[j]  <- "NA"
+      locs[j]      <- "Unknown"
     }
   }
-  
-  location_state[i] <- paste(locs, collapse = ",")
-  sasa_raw[i] <- paste(sasa_vals, collapse = ",")
+
+  location_state[i] <- paste(locs,      collapse = ",")
+  sasa_raw[i]       <- paste(sasa_vals, collapse = ",")
+  rsa_out[i]        <- paste(rsa_vals,  collapse = ",")
 }
 
-protein_data$`P-site SASA (Å²)` <- sasa_raw
+protein_data$`P-site SASA (Å²)`          <- sasa_raw
+protein_data$`P-site RSA (%)`            <- rsa_out
 protein_data$`P-site 3D Location (SASA)` <- location_state
 
 if ("Annotation" %in% names(protein_data)) {
