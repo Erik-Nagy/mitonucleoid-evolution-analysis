@@ -13,9 +13,9 @@ raw <- read_tsv(processed_tsv, show_col_types = FALSE,
 MULTI_VAL_COLS <- c(
   "P-site positions",
   "P-site Exact Conservation (%)",
-  "P-site Functional STY (%)",
-  "P-site pLDDT Score",
-  "P-site Structural State",
+  "P-site Functional Conservation (%)",
+  "P-site AF2 pLDDT Score",
+  "P-site AF2 Structural State",
   "Metapredict Disorder Score",
   "Metapredict State",
   "P-site Exposure"

@@ -18,7 +18,7 @@ conservation_collapsed <- conservation_data %>%
   group_by(Gene) %>%
   summarise(
     `P-site Exact Conservation (%)` = paste(Exact_Match_Perc, collapse = ","),
-    `P-site Functional STY (%)` = paste(Functional_STY_Perc, collapse = ",")
+    `P-site Functional Conservation (%)` = paste(Functional_STY_Perc, collapse = ",")
   )
 
 # Clean

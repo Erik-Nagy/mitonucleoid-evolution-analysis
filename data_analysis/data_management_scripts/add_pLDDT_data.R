@@ -71,8 +71,8 @@ for (i in 1:nrow(protein_data)) {
   structural_state[i] <- paste(states, collapse = ",")
 }
 
-protein_data$`P-site pLDDT Score` <- plddt_scores
-protein_data$`P-site Structural State` <- structural_state
+protein_data$`P-site AF2 pLDDT Score` <- plddt_scores
+protein_data$`P-site AF2 Structural State` <- structural_state
 
 if ("Annotation" %in% names(protein_data)) {
   protein_data <- protein_data %>% relocate(Annotation, .after = last_col())
