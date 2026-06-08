@@ -55,6 +55,7 @@ for (query_fasta in query_files) {
   ref_id <- sub("\\s.*", "", names(ref_seq))
   names(ref_seq) <- paste0(ref_id, " | Saccharomyces cerevisiae (Query)")
 
+  # Run blast
   cmd <- paste('blastp -query', shQuote(query_fasta), '-db', db_name, '-out', shQuote(results_table), '-outfmt 6 -evalue 1e-5')
   blastp_exit <- system(cmd)
   if (blastp_exit != 0) stop(paste("blastp failed for gene:", base_name, "— ensure NCBI BLAST+ is installed and on PATH."))

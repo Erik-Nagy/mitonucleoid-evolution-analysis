@@ -34,12 +34,7 @@ residue_types <- read_csv(conservation_csv, show_col_types = FALSE) %>%
   transmute(
     `Standard gene name` = Gene,
     `P-site positions`   = as.character(Original_Position),
-    `Residue Type`       = case_when(
-      trimws(Reference_AA) == "S" ~ "pS",
-      trimws(Reference_AA) == "T" ~ "pT",
-      trimws(Reference_AA) == "Y" ~ "pY",
-      TRUE ~ NA_character_
-    )
+    `Residue Type`       = paste0("p", trimws(Reference_AA))
   )
 
 psite_long <- left_join(psite_long, residue_types,
