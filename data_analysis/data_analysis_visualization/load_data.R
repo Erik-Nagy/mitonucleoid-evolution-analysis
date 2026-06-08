@@ -101,5 +101,5 @@ if (file.exists(all_sty_path)) {
                   nrow(all_sty), sum(all_sty$is_psite), sum(!all_sty$is_psite)))
 } else {
   all_sty <- NULL
-  message("NOTE: all_sty_data.tsv not found — run 'make process' to generate it (plots 12-14 will be skipped).")
+  message("NOTE: all_sty_data.tsv not found — run 'make process' to generate it (plots 05, 08, 11 will be skipped).")
 }
