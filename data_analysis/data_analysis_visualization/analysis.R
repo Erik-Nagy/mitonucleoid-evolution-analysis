@@ -1,5 +1,5 @@
 # 11–14 plots for P-site characterisation in mitochondrial nucleoid proteins.
-# Requires: psite_long, save_fig(), COL_AA, COL_DISORDER, COL_SASA  (load_data.R)
+# Requires: psite_long, save_fig(), COL_AA, COL_DISORDER, COL_EXPOSURE  (load_data.R)
 
 library(tidyverse)
 library(ggpubr)
@@ -97,11 +97,11 @@ p05 <- exp_total %>%
   geom_col(width = 0.55, colour = "white") +
   geom_text(aes(label = sprintf("%d\n(%.0f%%)", n, pct)),
             vjust = -0.5, size = 4, fontface = "bold") +
-  scale_fill_manual(values = COL_SASA, guide = "none") +
+  scale_fill_manual(values = COL_EXPOSURE, guide = "none") +
   scale_y_continuous(expand = expansion(mult = c(0, 0.40))) +
   coord_cartesian(clip = "off") +
   labs(
-    title    = "Exposed vs buried P-sites (SASA threshold: 20 Å²)",
+    title    = "Exposed vs buried P-sites (RSA threshold: 20%)",
     subtitle = sprintf("n = %d P-sites", n_sites),
     x        = NULL,
     y        = "Number of P-sites"
@@ -124,7 +124,7 @@ p06 <- exp_by_aa %>%
   geom_text(aes(label = ifelse(pct > 6, sprintf("%.0f%%", pct), "")),
             position = position_stack(vjust = 0.5),
             size = 3.8, colour = "white", fontface = "bold") +
-  scale_fill_manual(values = COL_SASA, name = "Location") +
+  scale_fill_manual(values = COL_EXPOSURE, name = "Exposure") +
   scale_y_continuous(labels = scales::percent_format(scale = 1),
                      expand = expansion(mult = c(0, 0.05))) +
   labs(
@@ -206,7 +206,7 @@ p10 <- psite_long %>%
   ggplot(aes(x = sasa_location, y = exact_cons, fill = sasa_location)) +
   geom_boxplot(outlier.shape = NA, alpha = 0.7, width = 0.5) +
   geom_jitter(width = 0.18, size = 2.2, alpha = 0.7, colour = "gray30", na.rm = TRUE) +
-  scale_fill_manual(values = COL_SASA, guide = "none") +
+  scale_fill_manual(values = COL_EXPOSURE, guide = "none") +
   stat_compare_means(method = "wilcox.test", label = "p.format",
                      label.x = 1.35, label.y = 105) +
   labs(
@@ -225,7 +225,7 @@ p11 <- psite_long %>%
              linewidth = 0.8) +
   geom_boxplot(outlier.shape = NA, alpha = 0.7, width = 0.5) +
   geom_jitter(width = 0.18, size = 2.2, alpha = 0.7, colour = "gray30", na.rm = TRUE) +
-  scale_fill_manual(values = COL_SASA, guide = "none") +
+  scale_fill_manual(values = COL_EXPOSURE, guide = "none") +
   scale_y_continuous(breaks = seq(0, 1, 0.25)) +
   coord_cartesian(ylim = c(0, 1.15), clip = "off") +
   stat_compare_means(method = "wilcox.test", label = "p.format",
@@ -321,12 +321,12 @@ if (!is.null(all_sty)) {
     geom_text(aes(label = ifelse(pct > 6, sprintf("%.0f%%", pct), "")),
               position = position_stack(vjust = 0.5),
               size = 3.5, colour = "white", fontface = "bold") +
-    scale_fill_manual(values = COL_SASA, name = "Location") +
+    scale_fill_manual(values = COL_EXPOSURE, name = "Exposure") +
     scale_y_continuous(labels = scales::percent_format(scale = 1),
                        expand = expansion(mult = c(0, 0.05))) +
     labs(
       title    = "Surface exposure: phosphorylated vs all S/T/Y residues",
-      subtitle = sprintf("n = %d P-sites, %d background STY (SASA threshold: 20 Å²)",
+      subtitle = sprintf("n = %d P-sites, %d background STY (RSA threshold: 20%%)",
                          sum(all_sty$is_psite & !is.na(all_sty$sasa_location)),
                          sum(!all_sty$is_psite & !is.na(all_sty$sasa_location))),
       x        = "Residue type  (lighter shade = background, darker = P-site)",

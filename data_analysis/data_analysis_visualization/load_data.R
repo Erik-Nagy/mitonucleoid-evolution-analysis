@@ -30,7 +30,7 @@ save_fig <- function(p, name, width = 8, height = 6) {
 
 # ── Colour palettes ───────────────────────────────────────────────────────────
 COL_DISORDER <- c("Ordered" = "#4393c3", "Disordered" = "#d6604d")
-COL_SASA     <- c("Buried"  = "#762a83", "Exposed"    = "#1b7837")
+COL_EXPOSURE <- c("Buried"  = "#762a83", "Exposed"    = "#1b7837")
 COL_AA       <- c("pS" = "#e41a1c", "pT" = "#377eb8", "pY" = "#ff7f00")
 
 # ── Load P-site long table ────────────────────────────────────────────────────
