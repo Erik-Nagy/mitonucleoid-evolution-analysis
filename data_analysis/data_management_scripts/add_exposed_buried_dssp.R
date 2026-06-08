@@ -125,9 +125,9 @@ for (i in 1:nrow(protein_data)) {
   rsa_out[i]        <- paste(rsa_vals,  collapse = ",")
 }
 
-protein_data$`P-site SASA (Å²)`          <- sasa_raw
-protein_data$`P-site RSA (%)`            <- rsa_out
-protein_data$`P-site 3D Location (SASA)` <- location_state
+protein_data$`P-site SASA (Å²)` <- sasa_raw
+protein_data$`P-site RSA (%)`   <- rsa_out
+protein_data$`P-site Exposure`  <- location_state
 
 if ("Annotation" %in% names(protein_data)) {
   protein_data <- protein_data %>% relocate(Annotation, .after = last_col())

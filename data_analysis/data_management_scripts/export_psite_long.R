@@ -18,7 +18,7 @@ MULTI_VAL_COLS <- c(
   "P-site Structural State",
   "Metapredict Disorder Score",
   "Metapredict State",
-  "P-site 3D Location (SASA)"
+  "P-site Exposure"
 )
 
 sasa_col <- grep("P-site SASA", names(raw), value = TRUE)[1]

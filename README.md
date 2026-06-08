@@ -134,7 +134,7 @@ The final file `data/mt_nucleoid_PTMs_list_P-sites_processed.tsv` contains the o
 | `Metapredict State` | Metapredict V3 | Ordered (<0.5) / Disordered (≥0.5) |
 | `P-site SASA (Å²)` | DSSP | Raw solvent-accessible surface area at P-site Cα (Å²; comma-separated) |
 | `P-site RSA (%)` | DSSP | Relative solvent accessibility — SASA normalised by residue-type maximum (Tien et al. 2013) |
-| `P-site 3D Location (SASA)` | DSSP | Exposed (RSA > 20%) / Buried (RSA ≤ 20%) |
+| `P-site Exposure` | DSSP | Exposed (RSA > 20%) / Buried (RSA ≤ 20%) |
 
 ---
 
