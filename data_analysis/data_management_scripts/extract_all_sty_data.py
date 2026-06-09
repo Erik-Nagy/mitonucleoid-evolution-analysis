@@ -8,7 +8,6 @@ import metapredict as meta
 
 
 def parse_cerevisiae_sequence(orthologs_dir, gene_name):
-    """Return the S. cerevisiae sequence from orthologs FASTA (first entry)."""
     fasta_path = os.path.join(orthologs_dir, f"{gene_name}_orthologs.fasta")
     if not os.path.exists(fasta_path):
         return None
@@ -19,14 +18,13 @@ def parse_cerevisiae_sequence(orthologs_dir, gene_name):
             line = line.rstrip()
             if line.startswith(">"):
                 if found_header:
-                    break  # second header → done with first sequence
+                    break 
                 found_header = True
             elif found_header:
                 seq_lines.append(line.strip())
     return "".join(seq_lines) if seq_lines else None
 
 
-# Max ASA (Å²) per residue — Tien et al. (2013) empirical values
 MAX_ASA = {
     "A": 121, "R": 265, "N": 187, "D": 187, "C": 148,
     "Q": 214, "E": 214, "G":  97, "H": 216, "I": 195,
@@ -36,7 +34,6 @@ MAX_ASA = {
 
 
 def parse_pdb_plddt(pdb_dir, uniprot_id):
-    """Return {residue_number: pLDDT} from AlphaFold2 PDB (B-factor on Cα atoms)."""
     pdb_path = os.path.join(pdb_dir, f"{uniprot_id}.pdb")
     if not os.path.exists(pdb_path):
         return {}
@@ -51,11 +48,6 @@ def parse_pdb_plddt(pdb_dir, uniprot_id):
 
 
 def run_dssp(pdb_path, mkdssp_path):
-    """
-    Run mkdssp on a PDB file and return {residue_number: SASA_Å²}.
-    Returns an empty dict if mkdssp fails.
-    DSSP ACC column (positions 35-38 in data lines) is the absolute SASA in Å².
-    """
     with tempfile.NamedTemporaryFile(suffix=".dssp", delete=False) as tmp:
         out_path = tmp.name
     try:
@@ -74,12 +66,12 @@ def run_dssp(pdb_path, mkdssp_path):
         if header_idx is None:
             return {}
         for line in lines[header_idx + 1:]:
-            if line[13:14] == "!":  # chain break marker
+            if line[13:14] == "!":
                 continue
             try:
                 resnum = int(line[5:10])
                 acc = float(line[34:38])
-                if acc <= 500:  # sanity cap (same as R script)
+                if acc <= 500:
                     sasa_map[resnum] = round(acc, 2)
             except (ValueError, IndexError):
                 continue
@@ -123,7 +115,6 @@ def main():
 
     df = pd.read_csv(tsv_path, sep="\t")
 
-    # Build set of known P-site (gene, position) pairs
     psite_set = set()
     for _, row in df.iterrows():
         gene = str(row["Standard gene name"]).strip()
@@ -163,7 +154,7 @@ def main():
         for i, aa in enumerate(sequence):
             if aa not in ("S", "T", "Y"):
                 continue
-            pos = i + 1  # 1-indexed
+            pos = i + 1
             dis_score = round(float(disorder[i]), 3)
             dis_state = "Disordered" if dis_score >= 0.5 else "Ordered"
             plddt_val = plddt_map.get(pos)
