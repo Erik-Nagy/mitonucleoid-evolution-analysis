@@ -19,7 +19,7 @@ mitonucleoid-evolution-analysis/
 │       ├── mt_nucleoid_PTMs_list_P-sites_20260414.xlsx   # source input
 │       ├── mt_nucleoid_PTMs_list_P-sites_20260414.tsv    # converted input
 │       ├── mt_nucleoid_PTMs_list_P-sites_processed.tsv   # fully enriched output
-│       ├── psite_conservation_results.csv                # intermediate conservation table
+│       ├── psite_conservation_results.tsv                # intermediate conservation table
 │       ├── all_sty_data.tsv                              # all S/T/Y background for pSTY vs STY plots
 │       ├── orthologs/                   # per-gene FASTA from UniProt/UniParc
 │       ├── homologs/                    # per-gene FASTA from BLAST

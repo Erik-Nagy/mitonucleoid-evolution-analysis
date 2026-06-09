@@ -5,12 +5,12 @@ library(stringr)
 
 args <- commandArgs(trailingOnly = TRUE)
 tsv_file <- args[1]
-results_csv <- args[2]
+results_tsv <- args[2]
 output_tsv <- args[3]
 
 # Load tables
 protein_data <- read_tsv(tsv_file)
-conservation_data <- read_csv(results_csv)
+conservation_data <- read_tsv(results_tsv)
 
 # Group and format
 conservation_collapsed <- conservation_data %>%

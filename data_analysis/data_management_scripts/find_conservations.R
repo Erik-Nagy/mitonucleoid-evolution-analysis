@@ -7,7 +7,7 @@ library(tidyr)
 args <- commandArgs(trailingOnly = TRUE)
 tsv_file <- args[1]
 homologs_dir <- args[2]
-output_csv <- args[3]
+output_tsv <- args[3]
 
 # Load proteins
 protein_data <- read_tsv(tsv_file)
@@ -103,4 +103,4 @@ for (i in 1:nrow(protein_data)) {
 
 # 4. Save to CSV
 final_results <- bind_rows(results_list)
-write_csv(final_results, output_csv)
+write_tsv(final_results, output_tsv)

@@ -20,7 +20,7 @@ ORTHOLOGS_DONE := $(DATA)/orthologs/.done
 PDB_DONE       := $(DATA)/proteins_pdb/.done
 HOMOLOGS_DONE  := $(DATA)/homologs/.done
 
-CONSERVATION   := $(DATA)/psite_conservation_results.csv
+CONSERVATION   := $(DATA)/psite_conservation_results.tsv
 PROCESSED_TSV  := $(DATA)/$(PROCESSED_BASE).tsv
 PLDDT_DONE     := $(DATA)/.plddt_done
 DISORDER_DONE  := $(DATA)/.disorder_done
