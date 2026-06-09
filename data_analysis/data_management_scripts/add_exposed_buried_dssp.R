@@ -2,7 +2,6 @@ library(readr)
 library(dplyr)
 library(bio3d)
 
-# Max ASA (Å²) per residue — Tien et al. (2013) empirical values
 MAX_ASA <- c(
   ALA = 121, ARG = 265, ASN = 187, ASP = 187, CYS = 148,
   GLN = 214, GLU = 214, GLY =  97, HIS = 216, ILE = 195,

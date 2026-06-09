@@ -31,7 +31,7 @@ psite_long <- raw %>%
   mutate(across(all_of(MULTI_VAL_COLS), trimws))
 
 # Add residue type (pS / pT / pY) from conservation results
-residue_types <- read_csv(conservation_csv, show_col_types = FALSE) %>%
+residue_types <- read_tsv(conservation_csv, show_col_types = FALSE) %>%
   transmute(
     `Standard gene name` = Gene,
     `P-site positions`   = as.character(Original_Position),
